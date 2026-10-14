@@ -8,7 +8,7 @@ import { api } from "@/lib/api";
 import { num, pick, t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 import type { GalleryImage, Item, Lang, Stat } from "@/lib/types";
-import { splitEmphasis } from "@/lib/utils";
+import { DEFAULT_PORTRAIT, splitEmphasis } from "@/lib/utils";
 
 interface Home {
   site: Item;
@@ -177,7 +177,7 @@ function Hero({ site, lang }: { site: Item; lang: Lang }) {
   const d = t(lang);
   const name = pick(site, "name", lang);
   const title = pick(site, "hero_title", lang) || name;
-  const portrait = typeof site.hero_image === "string" && site.hero_image ? site.hero_image : null;
+  const portrait = typeof site.hero_image === "string" && site.hero_image ? site.hero_image : DEFAULT_PORTRAIT;
 
   return (
     <section className="relative overflow-hidden">

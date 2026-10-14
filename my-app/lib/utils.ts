@@ -1,3 +1,6 @@
+/** His portrait, bundled with the site; used wherever no photo has been set in Settings. */
+export const DEFAULT_PORTRAIT = "/rudra-tamang.jpg";
+
 export function cn(...parts: (string | false | null | undefined)[]) {
   return parts.filter(Boolean).join(" ");
 }

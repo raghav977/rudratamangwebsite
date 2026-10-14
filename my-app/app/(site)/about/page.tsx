@@ -6,6 +6,7 @@ import { Cover, Img } from "@/components/site/Media";
 import { getSite, list } from "@/lib/api";
 import { num, pick, t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
+import { DEFAULT_PORTRAIT } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -31,7 +32,7 @@ export default async function AboutPage() {
         </div>
         <div className="wrap relative grid gap-12 py-16 md:py-24 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-5">
-            <Cover src={site.about_image ?? site.hero_image} alt={name} tone="navy" className="reveal aspect-[4/5] shadow-[0_30px_80px_-30px_rgb(6_24_61/0.6)]" eager />
+            <Cover src={site.about_image || site.hero_image || DEFAULT_PORTRAIT} alt={name} tone="navy" className="reveal aspect-[4/5] shadow-[0_30px_80px_-30px_rgb(6_24_61/0.6)]" eager />
           </div>
           <div className="lg:col-span-6 lg:col-start-7">
             <p className="kicker reveal">{d.about.kicker}</p>
