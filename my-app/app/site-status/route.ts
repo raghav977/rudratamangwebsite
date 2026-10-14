@@ -6,13 +6,14 @@ export const dynamic = "force-dynamic";
 
 const API = (process.env.API_URL?.trim() || "http://localhost:4000").replace(/\/+$/, "");
 
-async function probe(path: string, base = API) {
+async function probe(path: string, base = API, headers: Record<string, string> = {}, label = "") {
   const started = Date.now();
   try {
-    const res = await fetch(`${base}${path}`, { cache: "no-store", signal: AbortSignal.timeout(15_000) });
+    const res = await fetch(`${base}${path}`, { cache: "no-store", headers, signal: AbortSignal.timeout(15_000) });
     const body = await res.text();
     const title = body.match(/<title>([^<]*)<\/title>/i)?.[1] ?? null;
     return {
+      label,
       via: base,
       path,
       ok: res.ok,
@@ -31,10 +32,16 @@ async function probe(path: string, base = API) {
 
 export async function GET(request: Request) {
   const self = new URL(request.url).origin;
+  const visitor = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "";
+  const browser = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+    Accept: "application/json,text/html;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+  };
   const results = [
-    await probe("/api/public/site"),
-    // Same request through this site's own /api rewrite (Vercel's edge proxy).
-    await probe("/api/public/site", self),
+    await probe("/api/public/site", API, {}, "plain"),
+    await probe("/api/public/site", API, browser, "browser headers"),
+    await probe("/api/public/site", API, { "X-Forwarded-For": visitor, "X-Real-IP": visitor }, "visitor ip forwarded"),
   ];
   return Response.json(
     {
