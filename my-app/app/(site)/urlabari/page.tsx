@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { CAMPAIGN_PAGES } from "@/lib/features";
 import { PageHero } from "@/components/site/Section";
 import { list } from "@/lib/api";
 import { num, pick, pickList, t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 
 export async function generateMetadata(): Promise<Metadata> {
+  if (!CAMPAIGN_PAGES) return {};
   const lang = await getLang();
   return { title: t(lang).urlabari.title };
 }
@@ -13,6 +16,7 @@ const fmt = (n: unknown, lang: "en" | "np", digits = 0) =>
   typeof n === "number" ? num(n.toLocaleString("en-IN", { maximumFractionDigits: digits }), lang) : "—";
 
 export default async function UrlabariPage() {
+  if (!CAMPAIGN_PAGES) notFound();
   const [lang, wards] = await Promise.all([getLang(), list("wards")]);
   const d = t(lang);
   const totals = wards.items.reduce<{ pop: number; hh: number; area: number }>(

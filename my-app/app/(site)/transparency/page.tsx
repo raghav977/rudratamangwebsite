@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { CAMPAIGN_PAGES } from "@/lib/features";
 import Link from "next/link";
 import { Check, Search, X } from "lucide-react";
 import { DocumentRow } from "@/components/site/DocumentRow";
@@ -11,11 +13,13 @@ import { getLang } from "@/lib/lang";
 type Facet = { value: string; count: number };
 
 export async function generateMetadata(): Promise<Metadata> {
+  if (!CAMPAIGN_PAGES) return {};
   const lang = await getLang();
   return { title: t(lang).transparency.kicker };
 }
 
 export default async function TransparencyPage({ searchParams }: PageProps<"/transparency">) {
+  if (!CAMPAIGN_PAGES) notFound();
   const sp = await searchParams;
   const str = (v: unknown) => (typeof v === "string" && v ? v : undefined);
   const q = str(sp.q);

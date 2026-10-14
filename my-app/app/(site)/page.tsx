@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Check, Search } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AchievementCard, EventRow, PostCard } from "@/components/site/Cards";
-import { DocumentRow } from "@/components/site/DocumentRow";
 import { Markdown } from "@/components/site/Markdown";
 import { Cover, Img, VideoTile } from "@/components/site/Media";
 import { SectionHead } from "@/components/site/Section";
 import { api } from "@/lib/api";
-import { num, pick, pickList, t } from "@/lib/i18n";
+import { num, pick, t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 import type { GalleryImage, Item, Lang, Stat } from "@/lib/types";
 import { splitEmphasis } from "@/lib/utils";
@@ -25,8 +24,6 @@ interface Home {
 
 export default async function HomePage() {
   const [data, lang] = await Promise.all([api<Home>("/home"), getLang()]);
-  console.log("this is data",data);
-  
   if (!data) return null;
   const d = t(lang);
   const { site } = data;
@@ -38,33 +35,6 @@ export default async function HomePage() {
 
       {/* Personal message */}
       {pick(site, "message_body", lang) && <Message site={site} lang={lang} />}
-
-      {/* Vision */}
-      {data.ideas.length > 0 && (
-        <section className="relative overflow-hidden bg-navy py-24 text-white md:py-32">
-          <div className="grid-lines absolute inset-0" aria-hidden />
-          <div className="wrap relative">
-            <SectionHead light kicker={d.home.visionKicker} title={d.home.visionTitle} lead={d.home.visionLead} href="/vision" hrefLabel={d.home.readVision} />
-            <ol className="mt-16 grid gap-px border border-white/15 bg-white/15 md:grid-cols-2 lg:grid-cols-3">
-              {data.ideas.slice(0, 6).map((idea, i) => (
-                <li key={idea.id} className="bg-navy">
-                  <Link href={`/vision#${idea.slug}`} className="group flex h-full flex-col p-7 transition-colors hover:bg-[#0d3278] md:p-9">
-                    <div className="flex items-baseline justify-between">
-                      <span className="font-serif text-5xl italic text-[#9db8ff]">{num(String(i + 1).padStart(2, "0"), lang)}</span>
-                      <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">{pick(idea, "kicker", lang)}</span>
-                    </div>
-                    <h3 className="mt-10 font-serif text-[1.65rem] leading-tight">{pick(idea, "title", lang)}</h3>
-                    <p className="mt-4 leading-relaxed text-white/65">{pick(idea, "summary", lang)}</p>
-                    <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-medium text-white/80 group-hover:text-white">
-                      {d.common.readMore} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-      )}
 
       {/* Track record */}
       {data.achievements.length > 0 && (
@@ -79,44 +49,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* Transparency */}
-      <section className="border-y border-line bg-paper py-24 md:py-32">
-        <div className="wrap grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <p className="kicker">{d.home.transparencyKicker}</p>
-            <h2 className="display mt-4 text-[clamp(2.2rem,4.2vw,3.25rem)]">{d.home.transparencyTitle}</h2>
-            {pick(site, "transparency_intro", lang) && <p className="mt-6 text-lg leading-relaxed text-muted">{pick(site, "transparency_intro", lang)}</p>}
-            <ul className="mt-8 space-y-3">
-              {pickList(site, "transparency_pledge", lang).map((p) => (
-                <li key={p} className="flex gap-3">
-                  <span className="mt-1 flex size-5 shrink-0 items-center justify-center bg-blue text-white">
-                    <Check className="size-3.5" strokeWidth={3} />
-                  </span>
-                  <span className="text-ink/85">{p}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lg:col-span-7">
-            <div className="border border-line bg-white p-6 md:p-8">
-              <div className="flex items-center justify-between border-b border-line pb-4">
-                <p className="font-semibold">{d.home.latestDocs}</p>
-                <Search className="size-4 text-muted" />
-              </div>
-              <ul>
-                {data.documents.map((doc) => (
-                  <DocumentRow key={doc.id} doc={doc} lang={lang} compact />
-                ))}
-              </ul>
-              <Link href="/transparency" className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue">
-                <span className="link-draw">{d.home.allDocs}</span>
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* News */}
       {data.posts.length > 0 && (
@@ -137,7 +69,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Events + grievance desk */}
+      {/* Events + get involved */}
       <section className="pb-24 md:pb-32">
         <div className="wrap grid gap-5 lg:grid-cols-2">
           <div className="border border-line p-8 md:p-10">
@@ -163,15 +95,15 @@ export default async function HomePage() {
           <div className="relative overflow-hidden bg-blue p-8 text-white md:p-10">
             <div className="grid-lines absolute inset-0" aria-hidden />
             <div className="relative flex h-full flex-col">
-              <p className="kicker kicker-light text-white/80">{d.grievance.kicker}</p>
-              <h2 className="display mt-3 text-[clamp(2rem,3.6vw,2.75rem)]">{d.home.grievanceTitle}</h2>
-              <p className="mt-5 max-w-md text-lg leading-relaxed text-white/80">{d.home.grievanceText}</p>
+              <p className="kicker kicker-light text-white/80">{d.volunteer.kicker}</p>
+              <h2 className="display mt-3 text-[clamp(2rem,3.6vw,2.75rem)]">{d.home.joinTitle}</h2>
+              <p className="mt-5 max-w-md text-lg leading-relaxed text-white/80">{d.home.joinText}</p>
               <div className="mt-auto flex flex-wrap gap-3 pt-10">
-                <Link href="/grievance" className="btn btn-white">
-                  {d.home.grievanceCta} <ArrowRight className="size-4" />
+                <Link href="/get-involved" className="btn btn-white">
+                  {d.home.volunteer} <ArrowRight className="size-4" />
                 </Link>
-                <Link href="/grievance#track" className="btn btn-ghost-light">
-                  {d.home.trackCta}
+                <Link href="/contact" className="btn btn-ghost-light">
+                  {d.home.contact}
                 </Link>
               </div>
             </div>
@@ -245,8 +177,7 @@ function Hero({ site, lang }: { site: Item; lang: Lang }) {
   const d = t(lang);
   const name = pick(site, "name", lang);
   const title = pick(site, "hero_title", lang) || name;
-  // const portrait = typeof site.hero_image === "string" && site.hero_image ? site.hero_image : null;
-  const potrait ="https://scontent.fbir1-1.fna.fbcdn.net/v/t39.30808-6/497397560_1413607886441484_405079896117427247_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s1200x1600&_nc_cat=106&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGD0azBa3pQfgYbyFuMBJozCujHL7nuG2AK6Mcvue4bYIMzliNzF8AbHR5i0hNJGTQ3s2qxBo-CfNNknekRm4O1&_nc_ohc=EVXkRgKU67kQ7kNvwFLeMat&_nc_oc=AdqWogrI2HghyEG377qsOKQM8MVPOoBpgj7223p-d_4oWhDMq3X3hl4zQsH3_93TMjtNQoFOLsieE9ZaEPsSX8v7&_nc_zt=23&_nc_ht=scontent.fbir1-1.fna&_nc_gid=UxtPJWRVl-4bLwi-yjiNTQ&_nc_ss=7b2a8&oh=00_AQN_NbasxyKQTTb1lEELiTFHuutH5zsWwteCpTWLQhAhYQ&oe=6AC805FC"
+  const portrait = typeof site.hero_image === "string" && site.hero_image ? site.hero_image : null;
 
   return (
     <section className="relative overflow-hidden">
@@ -261,8 +192,8 @@ function Hero({ site, lang }: { site: Item; lang: Lang }) {
             <p className="reveal reveal-delay-2 mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl">{pick(site, "hero_text", lang)}</p>
           )}
           <div className="reveal reveal-delay-3 mt-10 flex flex-wrap gap-3">
-            <Link href="/vision" className="btn btn-primary">
-              {d.home.readVision} <ArrowRight className="size-4" />
+            <Link href="/about" className="btn btn-primary">
+              {d.home.aboutMe} <ArrowRight className="size-4" />
             </Link>
             <Link href="/work" className="btn btn-outline">
               {d.home.seeRecord}
@@ -273,8 +204,8 @@ function Hero({ site, lang }: { site: Item; lang: Lang }) {
         <div className="relative lg:col-span-5">
           <div className="relative h-full min-h-[460px] lg:-mr-8 lg:min-h-[640px]">
             <div className="absolute inset-0 overflow-hidden bg-navy lg:inset-y-10 lg:left-6">
-              {potrait ? (
-                <img src={potrait} alt={name}  className="reveal absolute inset-0 h-full w-full object-cover object-top" />
+              {portrait ? (
+                <Img src={portrait} alt={name} eager className="reveal absolute inset-0 h-full w-full object-cover object-top" />
               ) : (
                 <div className="grid-lines absolute inset-0 flex items-center justify-center">
                   <span className="font-serif text-[9rem] italic leading-none text-white/90">
@@ -291,7 +222,6 @@ function Hero({ site, lang }: { site: Item; lang: Lang }) {
             <div className="absolute bottom-6 left-0 right-6 bg-white p-5 shadow-[0_20px_60px_-20px_rgb(6_24_61/0.45)] lg:bottom-0 lg:-left-10 lg:right-auto lg:w-80">
               <p className="font-serif text-2xl leading-tight text-ink">{name}</p>
               <p className="mt-1.5 text-sm text-muted">{pick(site, "position", lang)}</p>
-              {pick(site, "party", lang) && <p className="mt-3 border-t border-line pt-3 text-xs font-semibold uppercase tracking-[0.12em] text-blue">{pick(site, "party", lang)}</p>}
             </div>
           </div>
         </div>

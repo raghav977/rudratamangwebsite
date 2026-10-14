@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Markdown } from "@/components/site/Markdown";
 import { Cover, Img } from "@/components/site/Media";
 import { getSite, list } from "@/lib/api";
@@ -59,13 +59,7 @@ export default async function AboutPage() {
           <div className="wrap grid gap-12 lg:grid-cols-12">
             <aside className="lg:col-span-3">
               <div className="lg:sticky lg:top-32">
-                {typeof site.manifesto_pdf === "string" && site.manifesto_pdf && (
-                  <a href={site.manifesto_pdf} className="group block border border-line p-6 transition-colors hover:border-blue" download>
-                    <Download className="size-5 text-blue" />
-                    <p className="mt-4 font-semibold leading-snug">{d.about.manifesto}</p>
-                    <p className="mt-1 text-xs text-muted">PDF</p>
-                  </a>
-                )}
+
               </div>
             </aside>
             <div className="max-w-[44rem] lg:col-span-8 lg:col-start-5">
@@ -103,9 +97,9 @@ export default async function AboutPage() {
 
       <section className="py-20">
         <div className="wrap flex flex-col items-start justify-between gap-6 border-t border-line pt-12 md:flex-row md:items-center">
-          <p className="display max-w-xl text-3xl">{d.vision.title}</p>
-          <Link href="/vision" className="btn btn-primary">
-            {d.home.readVision} <ArrowRight className="size-4" />
+          <p className="display max-w-xl text-3xl">{d.about.moreTitle}</p>
+          <Link href="/work" className="btn btn-primary">
+            {d.home.seeRecord} <ArrowRight className="size-4" />
           </Link>
         </div>
       </section>

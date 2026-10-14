@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { CAMPAIGN_PAGES } from "@/lib/features";
 import { Check, Download } from "lucide-react";
 import { Markdown } from "@/components/site/Markdown";
 import { Img } from "@/components/site/Media";
@@ -8,11 +10,13 @@ import { num, pick, pickList, t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 
 export async function generateMetadata(): Promise<Metadata> {
+  if (!CAMPAIGN_PAGES) return {};
   const lang = await getLang();
   return { title: t(lang).vision.kicker };
 }
 
 export default async function VisionPage() {
+  if (!CAMPAIGN_PAGES) notFound();
   const [site, lang, ideas] = await Promise.all([getSite(), getLang(), list("ideas")]);
   const d = t(lang);
   const manifesto = typeof site.manifesto_pdf === "string" ? site.manifesto_pdf : "";

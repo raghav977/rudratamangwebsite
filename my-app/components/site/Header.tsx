@@ -49,12 +49,10 @@ export function Header({ lang, nav, name, position, region, today, phone, email,
 
   const links = [
     { href: "/about", label: nav.about },
-    { href: "/vision", label: nav.vision },
     { href: "/work", label: nav.work },
-    { href: "/transparency", label: nav.transparency },
     { href: "/news", label: nav.news },
     { href: "/gallery", label: nav.gallery },
-    { href: "/urlabari", label: nav.urlabari },
+    { href: "/events", label: nav.events },
     { href: "/contact", label: nav.contact },
   ];
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
@@ -135,8 +133,8 @@ export function Header({ lang, nav, name, position, region, today, phone, email,
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link href="/grievance" className="btn btn-primary hidden h-11 sm:inline-flex">
-              {nav.grievance}
+            <Link href="/get-involved" className="btn btn-primary hidden h-11 sm:inline-flex">
+              {nav.volunteer}
             </Link>
             <button
               type="button"
@@ -170,7 +168,7 @@ export function Header({ lang, nav, name, position, region, today, phone, email,
         </div>
         <nav className="wrap relative flex-1 overflow-y-auto pb-10 pt-6">
           <ul className="border-t border-white/10">
-            {[{ href: "/", label: lang === "np" ? "गृहपृष्ठ" : "Home" }, ...links, { href: "/events", label: nav.events }].map((l, i) => (
+            {[{ href: "/", label: lang === "np" ? "गृहपृष्ठ" : "Home" }, ...links].map((l, i) => (
               <li key={l.href} className="border-b border-white/10">
                 <Link
                   href={l.href}
@@ -188,11 +186,11 @@ export function Header({ lang, nav, name, position, region, today, phone, email,
             ))}
           </ul>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            <Link href="/grievance" className="btn btn-white">
-              {nav.grievance}
-            </Link>
-            <Link href="/get-involved" className="btn btn-ghost-light">
+            <Link href="/get-involved" className="btn btn-white">
               {nav.volunteer} <ArrowUpRight className="size-4" />
+            </Link>
+            <Link href="/contact" className="btn btn-ghost-light">
+              {nav.getInTouch}
             </Link>
           </div>
           <div className="mt-8 flex items-center justify-between text-sm text-white/70">

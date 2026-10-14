@@ -9,16 +9,12 @@ export function Footer({ site, lang, d }: { site: Item; lang: Lang; d: Dict }) {
   const name = pick(site, "name", lang);
   const explore = [
     { href: "/about", label: d.nav.about },
-    { href: "/vision", label: d.nav.vision },
     { href: "/work", label: d.nav.work },
     { href: "/news", label: d.nav.news },
     { href: "/gallery", label: d.nav.gallery },
     { href: "/events", label: d.nav.events },
-    { href: "/urlabari", label: d.nav.urlabari },
   ];
   const participate = [
-    { href: "/transparency", label: d.nav.transparency },
-    { href: "/grievance", label: d.nav.grievance },
     { href: "/get-involved", label: d.nav.volunteer },
     { href: "/contact", label: d.nav.contact },
   ];

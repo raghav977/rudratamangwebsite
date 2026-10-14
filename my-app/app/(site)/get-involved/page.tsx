@@ -25,8 +25,8 @@ export default async function GetInvolvedPage() {
         </div>
         <aside className="space-y-5 lg:col-span-4 lg:col-start-9">
           {[
-            { href: "/grievance", title: d.nav.grievance, text: d.home.grievanceText },
-            { href: "/transparency", title: d.nav.transparency, text: d.home.transparencyTitle },
+            { href: "/work", title: d.nav.work, text: d.work.lead },
+            { href: "/events", title: d.nav.events, text: d.events.title },
             { href: "/contact", title: d.nav.contact, text: d.contact.lead },
           ].map((c) => (
             <Link key={c.href} href={c.href} className="group block border border-line p-6 transition-colors hover:border-blue">
