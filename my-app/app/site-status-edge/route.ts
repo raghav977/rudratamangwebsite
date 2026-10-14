@@ -20,6 +20,8 @@ export async function GET() {
       type,
       // A firewall/challenge page names itself in its title, e.g. "Bot Verification".
       title: type.includes("html") ? (body.match(/<title>([^<]*)<\/title>/i)?.[1] ?? null) : null,
+      raw: type.includes("html") ? body.slice(0, 2500) : null,
+      headers: Object.fromEntries(res.headers),
     };
   } catch (err) {
     const cause = (err as { cause?: { code?: string } }).cause;
