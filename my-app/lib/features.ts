@@ -1,7 +1,8 @@
+import type { Item } from "./types";
+
 /**
- * The site currently presents Rudra Tamang as a social activist, not a
- * candidate. Election-campaign pages (vision/manifesto, transparency documents,
- * ward profiles, grievance desk) are kept in the code but switched off; set
- * this to true to bring them back.
+ * Election-campaign pages and sections (Vision, Transparency, Urlabari wards,
+ * Grievances) only show while Dashboard → Settings → Campaign → "Campaign mode"
+ * is ticked. Otherwise the site presents Rudra Tamang as a social activist.
  */
-export const CAMPAIGN_PAGES = false;
+export const campaignOn = (site: Item | null | undefined) => Boolean(site?.campaign_mode);

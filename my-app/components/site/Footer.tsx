@@ -2,19 +2,29 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Dict } from "@/lib/i18n";
 import { pick } from "@/lib/i18n";
+import { campaignOn } from "@/lib/features";
 import type { Item, Lang } from "@/lib/types";
 import { SocialLinks } from "./Social";
 
 export function Footer({ site, lang, d }: { site: Item; lang: Lang; d: Dict }) {
   const name = pick(site, "name", lang);
+  const campaign = campaignOn(site);
   const explore = [
     { href: "/about", label: d.nav.about },
+    ...(campaign ? [{ href: "/vision", label: d.nav.vision }] : []),
     { href: "/work", label: d.nav.work },
     { href: "/news", label: d.nav.news },
     { href: "/gallery", label: d.nav.gallery },
     { href: "/events", label: d.nav.events },
+    ...(campaign ? [{ href: "/urlabari", label: d.nav.urlabari }] : []),
   ];
   const participate = [
+    ...(campaign
+      ? [
+          { href: "/transparency", label: d.nav.transparency },
+          { href: "/grievance", label: d.nav.grievance },
+        ]
+      : []),
     { href: "/get-involved", label: d.nav.volunteer },
     { href: "/contact", label: d.nav.contact },
   ];

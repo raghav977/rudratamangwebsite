@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import { Markdown } from "@/components/site/Markdown";
 import { Cover, Img } from "@/components/site/Media";
 import { getSite, list } from "@/lib/api";
 import { num, pick, t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 import { DEFAULT_PORTRAIT } from "@/lib/utils";
+import { campaignOn } from "@/lib/features";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -60,7 +61,13 @@ export default async function AboutPage() {
           <div className="wrap grid gap-12 lg:grid-cols-12">
             <aside className="lg:col-span-3">
               <div className="lg:sticky lg:top-32">
-
+                {campaignOn(site) && typeof site.manifesto_pdf === "string" && site.manifesto_pdf && (
+                  <a href={site.manifesto_pdf} className="group block border border-line p-6 transition-colors hover:border-blue" download>
+                    <Download className="size-5 text-blue" />
+                    <p className="mt-4 font-semibold leading-snug">{d.about.manifesto}</p>
+                    <p className="mt-1 text-xs text-muted">PDF</p>
+                  </a>
+                )}
               </div>
             </aside>
             <div className="max-w-[44rem] lg:col-span-8 lg:col-start-5">

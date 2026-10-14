@@ -20,8 +20,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
     setOpen(false);
   }
 
-  const content = schema.collections.filter((c) => c.kind === "content");
-  const inbox = schema.collections.filter((c) => c.kind === "inbox");
+  const content = schema.collections.filter((c) => c.kind === "content" && !c.hidden);
+  const inbox = schema.collections.filter((c) => c.kind === "inbox" && !c.hidden);
   const badge = (key: string) => (unread as Record<string, number>)[key] ?? 0;
 
   const item = (href: string, label: string, icon: string, count = 0, exact = false) => {

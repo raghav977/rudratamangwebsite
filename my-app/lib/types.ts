@@ -62,6 +62,8 @@ export interface CollectionDef {
   fields: FieldDef[];
   slugFrom?: string;
   titleField: string;
+  /** Left out of the dashboard menu (campaign sections while switched off). */
+  hidden?: boolean;
 }
 
 export interface List<T = Item> {

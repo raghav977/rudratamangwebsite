@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CAMPAIGN_PAGES } from "@/lib/features";
+import { campaignOn } from "@/lib/features";
+import { getSite } from "@/lib/api";
 import { GrievanceForm, GrievanceTracker } from "@/components/site/Forms";
 import { PageHero } from "@/components/site/Section";
 import { t } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 
 export async function generateMetadata(): Promise<Metadata> {
-  if (!CAMPAIGN_PAGES) return {};
+  if (!campaignOn(await getSite())) return {};
   const lang = await getLang();
   return { title: t(lang).grievance.title };
 }
 
 export default async function GrievancePage() {
-  if (!CAMPAIGN_PAGES) notFound();
+  if (!campaignOn(await getSite())) notFound();
   const lang = await getLang();
   const d = t(lang);
   return (

@@ -6,7 +6,7 @@ import { imageSize } from "image-size";
 import { z } from "zod";
 import { config } from "../config.js";
 import { db, q } from "../db.js";
-import { collectionMap, collections, columnsFor, settingsFields } from "../schema.js";
+import { CAMPAIGN_COLLECTIONS, collectionMap, collections, columnsFor, settingsFields } from "../schema.js";
 import {
   createItem,
   deleteItem,
@@ -70,8 +70,13 @@ authRouter.post("/password", requireAuth, async (req, res) => {
 export const adminRouter = Router();
 adminRouter.use(requireAuth);
 
-adminRouter.get("/schema", (_req, res) => {
-  res.json({ collections, settings: settingsFields });
+adminRouter.get("/schema", async (_req, res) => {
+  // Campaign sections drop out of the dashboard menu while campaign mode is off.
+  const { campaign_mode } = await getSettings(settingsFields);
+  res.json({
+    collections: collections.map((c) => (CAMPAIGN_COLLECTIONS.has(c.key) && !campaign_mode ? { ...c, hidden: true } : c)),
+    settings: settingsFields,
+  });
 });
 
 adminRouter.get("/overview", async (_req, res) => {

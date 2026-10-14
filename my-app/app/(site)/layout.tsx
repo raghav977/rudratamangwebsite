@@ -5,6 +5,7 @@ import { getSite } from "@/lib/api";
 import { pick, t, todayLine } from "@/lib/i18n";
 import { getLang } from "@/lib/lang";
 import { DEFAULT_PORTRAIT } from "@/lib/utils";
+import { campaignOn } from "@/lib/features";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [site, lang] = await Promise.all([getSite(), getLang()]);
@@ -37,6 +38,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
         phone={(site.phone as string) || undefined}
         email={(site.email as string) || undefined}
         logo={(site.logo as string) || DEFAULT_PORTRAIT}
+        campaign={campaignOn(site)}
       />
       <main id="main">{children}</main>
       <Footer site={site} lang={lang} d={d} />

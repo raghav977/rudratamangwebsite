@@ -57,7 +57,16 @@ export interface Collection {
   orderBy: string;
   /** Field shown as the row title in the dashboard. */
   titleField: string;
+  /** Left out of the dashboard menu (data and API stay as they are). */
+  hidden?: boolean;
 }
+
+/**
+ * Election-campaign sections. They only appear — on the site and in the
+ * dashboard menu — while Settings → Campaign → "Campaign mode" is turned on.
+ * Their data is kept either way.
+ */
+export const CAMPAIGN_COLLECTIONS = new Set(["ideas", "documents", "wards", "grievances"]);
 
 const DOCUMENT_CATEGORIES = [
   "Asset declaration",
@@ -74,9 +83,9 @@ const DOCUMENT_CATEGORIES = [
 export const collections: Collection[] = [
   {
     key: "achievements",
-    label: "Achievements",
-    singular: "Achievement",
-    description: "Delivered work: roads, schools, health posts, programmes.",
+    label: "My work",
+    singular: "Work item",
+    description: "Community programmes, relief work, campaigns and other initiatives.",
     kind: "content",
     icon: "award",
     orderBy: "featured DESC, year DESC, sort_order ASC, id DESC",
@@ -350,9 +359,8 @@ export const collections: Collection[] = [
 export const settingsFields: Field[] = [
   // Identity
   { name: "name", label: "Full name", type: "text", localized: true, required: true, group: "Identity" },
-  { name: "position", label: "Position / title", type: "text", localized: true, group: "Identity", help: "e.g. Mayoral candidate, Urlabari Municipality" },
-  { name: "party", label: "Party", type: "text", localized: true, group: "Identity", half: true },
-  { name: "constituency", label: "Constituency", type: "text", localized: true, group: "Identity", half: true },
+  { name: "position", label: "Position / title", type: "text", localized: true, group: "Identity", help: "Shown under the name, e.g. Social activist / समाजसेवी" },
+  { name: "constituency", label: "Place", type: "text", localized: true, group: "Identity", half: true, help: "Shown in the top bar, e.g. Urlabari, Morang" },
   { name: "logo", label: "Logo / emblem (optional)", type: "image", group: "Identity", half: true },
   { name: "signature", label: "Signature image (transparent PNG)", type: "image", group: "Identity", half: true },
 
@@ -376,11 +384,6 @@ export const settingsFields: Field[] = [
   { name: "hometown", label: "Hometown", type: "text", localized: true, group: "About", half: true },
   { name: "education", label: "Education", type: "text", localized: true, group: "About", half: true },
   { name: "family", label: "Family", type: "text", localized: true, group: "About", half: true },
-  { name: "manifesto_pdf", label: "Full manifesto (PDF)", type: "file", group: "About" },
-
-  // Transparency
-  { name: "transparency_intro", label: "Transparency page introduction", type: "textarea", localized: true, group: "Transparency" },
-  { name: "transparency_pledge", label: "Transparency pledge (one per line)", type: "list", localized: true, group: "Transparency" },
 
   // Contact
   { name: "email", label: "Public email", type: "email", group: "Contact", half: true },
@@ -399,6 +402,19 @@ export const settingsFields: Field[] = [
   // SEO
   { name: "seo_description", label: "Search description", type: "textarea", localized: true, group: "SEO" },
   { name: "og_image", label: "Share image (1200×630)", type: "image", group: "SEO" },
+
+  // Campaign: everything below is only used while campaign mode is on.
+  {
+    name: "campaign_mode",
+    label: "Campaign mode",
+    type: "boolean",
+    group: "Campaign",
+    help: "Turn on to show the election pages (Vision, Transparency, Urlabari wards, Grievances) on the site and in this dashboard menu. Turn off to present him as a social activist only. Nothing is deleted either way.",
+  },
+  { name: "party", label: "Party", type: "text", localized: true, group: "Campaign", half: true },
+  { name: "manifesto_pdf", label: "Full manifesto (PDF)", type: "file", group: "Campaign" },
+  { name: "transparency_intro", label: "Transparency page introduction", type: "textarea", localized: true, group: "Campaign" },
+  { name: "transparency_pledge", label: "Transparency pledge (one per line)", type: "list", localized: true, group: "Campaign" },
 ];
 
 export const collectionMap = new Map(collections.map((c) => [c.key, c]));

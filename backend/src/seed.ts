@@ -52,34 +52,28 @@ if (!(await db.get(`SELECT id FROM users WHERE email = ?`, [adminEmail]))) {
 await saveSettings(settingsFields, {
   name: "Rudra Tamang",
   name_np: "रुद्र तामाङ",
-  position: "Candidate for Mayor, Urlabari Municipality",
-  position_np: "मेयर पदका उम्मेदवार, उर्लाबारी नगरपालिका",
+  position: "Social Activist",
+  position_np: "समाजसेवी",
   constituency: "Urlabari, Morang",
   constituency_np: "उर्लाबारी, मोरङ",
   party: "",
-  hero_kicker: "Urlabari · Morang · Koshi Province",
-  hero_kicker_np: "उर्लाबारी · मोरङ · कोशी प्रदेश",
-  hero_title: "A municipality that *answers* to its people.",
-  hero_title_np: "जनताप्रति *जवाफदेही* नगरपालिका।",
-  hero_text:
-    "Every rupee published. Every ward heard. Every promise tracked in public — from the first day in office to the last.",
-  hero_text_np: "हरेक रुपैयाँ सार्वजनिक। हरेक वडाको आवाज सुनुवाइ। पहिलो दिनदेखि अन्तिम दिनसम्म हरेक प्रतिबद्धता खुला रूपमा ट्र्याक।",
-  stats: [
-    { value: "9", label: "wards, one plan", label_np: "वडा, एउटै योजना" },
-    { value: "70,908", label: "residents (Census 2078)", label_np: "बासिन्दा (जनगणना २०७८)" },
-    { value: "66", label: "schools to strengthen", label_np: "विद्यालय सुदृढ गर्न" },
-    { value: "100%", label: "spending published", label_np: "खर्च सार्वजनिक" },
-  ],
-  message_title: "Why I am standing",
-  message_title_np: "म किन उम्मेदवार बनेँ",
-  message_body:
-    "Urlabari has grown by more than a quarter in a decade. Our roads, drains, schools and health posts have not kept pace, and too many of our young people now build other countries instead of their own.\n\nI am not asking for trust on promises alone. Everything I commit to on this site has a ward, a budget line and a date — and you will be able to check each one here, in public, while I am in office.\n\nCome to a ward meeting, file a grievance, read the documents. Hold me to it.",
-  message_body_np:
-    "पछिल्लो दशकमा उर्लाबारीको जनसंख्या एक चौथाइभन्दा बढीले बढ्यो। तर हाम्रा सडक, ढल, विद्यालय र स्वास्थ्य चौकी त्यो गतिमा अघि बढेनन्, र हाम्रा धेरै युवा आज आफ्नो होइन, अर्काको देश बनाइरहेका छन्।\n\nम केवल वाचामा विश्वास माग्दिनँ। यस साइटमा मैले गरेको हरेक प्रतिबद्धताको वडा, बजेट शीर्षक र मिति छ — र पदमा रहँदा तपाईं यहीँ, सार्वजनिक रूपमा, प्रत्येक जाँच्न सक्नुहुनेछ।\n\nवडा भेलामा आउनुहोस्, गुनासो दर्ता गर्नुहोस्, कागजात पढ्नुहोस्। मलाई जवाफदेही बनाउनुहोस्।",
-  cta_title: "Urlabari is built by the people who show up.",
-  cta_title_np: "उर्लाबारी उपस्थित हुनेहरूले बनाउँछन्।",
-  cta_text: "Volunteer in your ward, bring a problem to our desk, or simply tell us what you think.",
-  cta_text_np: "आफ्नो वडामा स्वयंसेवक बन्नुहोस्, समस्या लिएर आउनुहोस्, वा आफ्नो विचार भन्नुहोस्।",
+  campaign_mode: false,
+  hero_kicker: "Social activist · Urlabari, Morang",
+  hero_kicker_np: "समाजसेवी · उर्लाबारी, मोरङ",
+  hero_title: "Serving society, *standing with the people*.",
+  hero_title_np: "समाजको सेवा, *जनताको साथ*।",
+  hero_text: "Community programmes, relief work and everyday help for the people of Urlabari. This site is a record of that work.",
+  hero_text_np: "उर्लाबारीका जनताका लागि सामुदायिक कार्यक्रम, राहत र दैनिक सहयोग। यो साइट त्यही कामको अभिलेख हो।",
+  // His own figures (years of service, programmes run, people reached…), or leave empty to hide the strip.
+  stats: [],
+  message_title: "Who is Rudra Tamang?",
+  message_title_np: "को हुन् रुद्र तामाङ?",
+  message_body: "I am Rudra Tamang, a social activist from Urlabari.\n\nI believe a community moves forward when its people look out for each other — when a family in trouble is not left alone, when young people have something to work towards, and when problems are solved together instead of only complained about.\n\nThat is the work I try to do every day: organising programmes, helping where help is needed and bringing people together. This website is a record of that work — the photos, the news and the people behind it.\n\nIf you would like to join in, or simply want to talk, my door is always open.",
+  message_body_np: "म रुद्र तामाङ, उर्लाबारीको एक सामाजिक अभियन्ता।\n\nमानिसहरूले एकअर्काको ख्याल गर्दा समाज अघि बढ्छ भन्ने मेरो विश्वास छ — दुःखमा परेको परिवार एक्लो नपरोस्, युवाहरूसँग अघि बढ्ने बाटो होस्, र समस्याको गुनासो मात्र होइन, मिलेर समाधान होस्।\n\nत्यही काम म हरेक दिन गर्ने प्रयास गर्छु: कार्यक्रम आयोजना गर्ने, आवश्यक परेकालाई सहयोग गर्ने र मानिसहरूलाई एकै ठाउँमा ल्याउने। यो वेबसाइट त्यही कामको अभिलेख हो — तस्बिर, समाचार र त्यसपछाडिका मानिसहरू।\n\nसँगै काम गर्न चाहनुहुन्छ वा कुरा मात्र गर्न चाहनुहुन्छ भने, मेरो ढोका सधैं खुला छ।",
+  cta_title: "Let's work together and change society.",
+  cta_title_np: "सँगै काम गरौं, समाज बदलौं।",
+  cta_text: "Join a programme, lend a hand, or simply tell us what you think.",
+  cta_text_np: "कुनै कार्यक्रममा सहभागी हुनुहोस्, सहयोगको हात बढाउनुहोस्, वा आफ्नो विचार भन्नुहोस्।",
   about_intro:
     "Born and raised in Urlabari, Rudra Tamang has spent nearly two decades in community organising, cooperative work and local government.",
   about_intro_np: "उर्लाबारीमै जन्मिएका र हुर्किएका रुद्र तामाङले झन्डै दुई दशक सामुदायिक संगठन, सहकारी र स्थानीय सरकारमा बिताएका छन्।",
@@ -121,8 +115,8 @@ await saveSettings(settingsFields, {
   map_embed: "https://www.google.com/maps?q=Urlabari,Morang,Nepal&output=embed",
   facebook: "https://facebook.com/",
   youtube: "https://youtube.com/",
-  seo_description: "Rudra Tamang — vision, record and public documents for Urlabari Municipality, Morang.",
-  seo_description_np: "रुद्र तामाङ — उर्लाबारी नगरपालिका, मोरङका लागि दृष्टिकोण, काम र सार्वजनिक कागजात।",
+  seo_description: "Rudra Tamang — social activist from Urlabari, Morang. His work, news, photos and how to get in touch.",
+  seo_description_np: "रुद्र तामाङ — उर्लाबारी, मोरङका समाजसेवी। उनका काम, समाचार, तस्बिर र सम्पर्क।",
   // image:"https://scontent.fbir1-1.fna.fbcdn.net/v/t39.30808-6/497397560_1413607886441484_405079896117427247_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s1200x1600&_nc_cat=106&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGD0azBa3pQfgYbyFuMBJozCujHL7nuG2AK6Mcvue4bYIMzliNzF8AbHR5i0hNJGTQ3s2qxBo-CfNNknekRm4O1&_nc_ohc=EVXkRgKU67kQ7kNvwFLeMat&_nc_oc=AdqWogrI2HghyEG377qsOKQM8MVPOoBpgj7223p-d_4oWhDMq3X3hl4zQsH3_93TMjtNQoFOLsieE9ZaEPsSX8v7&_nc_zt=23&_nc_ht=scontent.fbir1-1.fna&_nc_gid=UxtPJWRVl-4bLwi-yjiNTQ&_nc_ss=7b2a8&oh=00_AQN_NbasxyKQTTb1lEELiTFHuutH5zsWwteCpTWLQhAhYQ&oe=6AC805FC"
 });
 
@@ -294,7 +288,6 @@ await add("timeline", [
   { year: "2070", title: "Chair, community forest user group", title_np: "सामुदायिक वन उपभोक्ता समूहको अध्यक्ष", description: "Placeholder milestone.", description_np: "नमुना।" },
   { year: "2074", title: "Elected ward representative", title_np: "वडा प्रतिनिधिमा निर्वाचित", description: "Placeholder milestone.", description_np: "नमुना।" },
   { year: "2079", title: "Flood relief coordinator", title_np: "बाढी राहत संयोजक", description: "Placeholder milestone.", description_np: "नमुना।" },
-  { year: "2083", title: "Candidate for Mayor", title_np: "मेयर पदका उम्मेदवार", description: "Placeholder milestone.", description_np: "नमुना।" },
 ]);
 
 // ---- Wards (real: Census 2078 via urlabari-data.json) ------------------

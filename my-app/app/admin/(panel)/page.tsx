@@ -32,12 +32,16 @@ export default function OverviewPage() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
   const labelOf = (key: string | null) => schema.collections.find((c) => c.key === key)?.label ?? key ?? "";
+  const shown = (key: string) => schema.collections.some((c) => c.key === key && !c.hidden);
+  const grievancesOn = shown("grievances");
 
   const quick = [
     { href: "/admin/c/posts/new", label: "Write news", icon: Newspaper },
-    { href: "/admin/c/documents/new", label: "Publish a document", icon: FileText },
     { href: "/admin/c/albums/new", label: "New photo album", icon: Images },
-    { href: "/admin/c/achievements/new", label: "Add achievement", icon: Plus },
+    { href: "/admin/c/achievements/new", label: "Add work", icon: Plus },
+    shown("documents")
+      ? { href: "/admin/c/documents/new", label: "Publish a document", icon: FileText }
+      : { href: "/admin/surveys", label: "Create a survey", icon: FileText },
   ];
 
   const totalGrievances = o?.grievanceStatus.reduce((a, g) => a + g.count, 0) ?? 0;
@@ -65,7 +69,9 @@ export default function OverviewPage() {
           { key: "messages", label: "Unread messages", value: o?.unread.messages },
           { key: "volunteers", label: "New volunteers", value: o?.unread.volunteers },
           { key: "surveys", label: "Survey responses this week", value: o?.surveys.week, href: "/admin/surveys" },
-        ].map((s) => (
+        ]
+          .filter((s) => s.key !== "grievances" || grievancesOn)
+          .map((s) => (
           <Link key={s.key} href={s.href ?? `/admin/c/${s.key}`} className="group relative overflow-hidden bg-navy p-6 text-white">
             <div className="grid-lines absolute inset-0 opacity-60" aria-hidden />
             <div className="relative">
@@ -80,6 +86,35 @@ export default function OverviewPage() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3">
+        {!grievancesOn && (
+          <Panel
+            title="Latest messages"
+            className="xl:col-span-2"
+            actions={
+              <Link href="/admin/c/messages" className="text-xs font-medium text-blue">
+                View all
+              </Link>
+            }
+          >
+            {o && o.recentMessages.length === 0 && <p className="p-8 text-center text-sm text-muted">No messages yet.</p>}
+            <ul>
+              {o?.recentMessages.map((m) => (
+                <li key={m.id} className="border-b border-line last:border-0">
+                  <Link href={`/admin/c/messages/${m.id}`} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#f8faff]">
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium">{m.subject || m.name}</span>
+                      <span className="text-xs text-muted">
+                        {m.name} · {relativeTime(m.created_at)}
+                      </span>
+                    </span>
+                    <Badge>{m.status || "New"}</Badge>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        )}
+        {grievancesOn && (
         <Panel
           title="Latest grievances"
           className="xl:col-span-2"
@@ -129,6 +164,7 @@ export default function OverviewPage() {
             </div>
           )}
         </Panel>
+        )}
 
         <Panel title="Recent activity">
           <ul className="max-h-[420px] overflow-y-auto">
@@ -150,7 +186,7 @@ export default function OverviewPage() {
       <Panel title="Website content" className="mt-6">
         <div className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3 lg:grid-cols-5">
           {schema.collections
-            .filter((c) => c.kind === "content")
+            .filter((c) => c.kind === "content" && !c.hidden)
             .map((c) => (
               <Link key={c.key} href={`/admin/c/${c.key}`} className="group flex items-center gap-3 bg-white px-5 py-4 hover:bg-[#f8faff]">
                 <Icon name={c.icon} className="size-4 text-blue" />
