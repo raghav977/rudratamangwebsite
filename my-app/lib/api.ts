@@ -18,6 +18,11 @@ export async function api<T>(path: string): Promise<T | null> {
   }
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`API ${API}/api/public${path} → ${res.status}`);
+  if (!res.headers.get("content-type")?.includes("application/json")) {
+    // e.g. the host's firewall answering with a "Bot Verification" page instead of the API.
+    const title = (await res.text()).match(/<title>([^<]*)<\/title>/i)?.[1];
+    throw new ApiUnavailable(`The content server at ${API} answered with a web page${title ? ` (“${title}”)` : ""} instead of data — its firewall is blocking this server.`);
+  }
   return res.json() as Promise<T>;
 }
 
